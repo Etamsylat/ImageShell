@@ -1,6 +1,6 @@
 ﻿namespace ImageShell
 {
-    partial class Form1
+    partial class form
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form));
             imageBox = new PictureBox();
             selectImageBtn = new Button();
             unshuffleBtn = new Button();
@@ -49,6 +49,7 @@
             imageBox.SizeMode = PictureBoxSizeMode.Zoom;
             imageBox.TabIndex = 0;
             imageBox.TabStop = false;
+            imageBox.Click += imageBox_Click;
             // 
             // selectImageBtn
             // 
@@ -86,9 +87,9 @@
             // paramsTxt
             // 
             paramsTxt.ForeColor = Color.Gray;
-            paramsTxt.Location = new Point(31, 279);
+            paramsTxt.Location = new Point(31, 280);
             paramsTxt.Name = "paramsTxt";
-            paramsTxt.Size = new Size(100, 23);
+            paramsTxt.Size = new Size(120, 23);
             paramsTxt.TabIndex = 4;
             paramsTxt.Text = "Enter string...";
             paramsTxt.Enter += paramsTxt_Enter;
@@ -105,7 +106,7 @@
             saveBtn.UseVisualStyleBackColor = true;
             saveBtn.Click += saveBtn_Click;
             // 
-            // Form1
+            // form
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -117,9 +118,14 @@
             Controls.Add(unshuffleBtn);
             Controls.Add(selectImageBtn);
             Controls.Add(imageBox);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
-            Text = "Form1";
+            KeyPreview = true;
+            MaximizeBox = false;
+            Name = "form";
+            Text = "Image Shell";
+            Click += Form1_Click;
+            KeyDown += Form1_KeyDown;
             ((System.ComponentModel.ISupportInitialize)imageBox).EndInit();
             ResumeLayout(false);
             PerformLayout();

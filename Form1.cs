@@ -1,12 +1,11 @@
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Threading;
 
 
 
 namespace ImageShell
 {
-    public partial class Form1 : Form
+    public partial class form : Form
     {
 
         Bitmap baseImage, imageClone;
@@ -17,9 +16,9 @@ namespace ImageShell
         public List<int> strengths = new List<int>();
         bool isWorking;
         bool isPlaceholderTextDisplayed = true;
+        bool isWriting = false;
 
-
-        public Form1()
+        public form()
         {
             InitializeComponent();
         }
@@ -36,14 +35,14 @@ namespace ImageShell
                 Thread thread = new Thread(() => ImageToList(imageClone));
                 thread.Start();
             }
-            
+
 
         }
 
         private void saveBtn_Click(object sender, EventArgs e)
         {
             SaveFileDialog ofd = new SaveFileDialog();
-            ofd.Filter = "BMP(*.bmp)|*.bmp";
+            ofd.Filter = "PNG(*.png)|*.png";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 baseImage.Save(ofd.FileName, ImageFormat.Png);
@@ -335,6 +334,7 @@ namespace ImageShell
 
         private void paramsTxt_Enter(object sender, EventArgs e)
         {
+            isWriting = true;
             if (isPlaceholderTextDisplayed)
             {
                 paramsTxt.Text = "";
@@ -345,12 +345,39 @@ namespace ImageShell
 
         private void paramsTxt_Leave(object sender, EventArgs e)
         {
+            isWriting = false;
             if (string.IsNullOrWhiteSpace(paramsTxt.Text))
             {
                 paramsTxt.Text = "Enter string...";
                 paramsTxt.ForeColor = Color.Gray;
                 isPlaceholderTextDisplayed = true;
             }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V && !isWriting)
+            {
+                if (Clipboard.ContainsImage())
+                {
+                    baseImage = (Bitmap)Clipboard.GetImage();
+                    imageBox.Image = baseImage;
+                    imageClone = (Bitmap)baseImage.Clone();
+                    Thread thread = new Thread(() => ImageToList(imageClone));
+                    thread.Start();
+                }
+            }
+            
+        }
+
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            imageBox.Focus();
+        }
+
+        private void imageBox_Click(object sender, EventArgs e)
+        {
+            imageBox.Focus();
         }
     }
 }
